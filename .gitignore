@@ -1,0 +1,10 @@
+# folder
+
+experiments/*
+!experiments/pretrained_models
+
+results/*
+tb_logger/*
+
+# file extensions
+*.pyc

@@ -1,0 +1,57 @@
+name: 01_SAIN_WebP_DB_GMM_5_E_5_V_3_x2
+suffix: ~  # add suffix to saved images
+model: SAIN
+scale: 2
+crop_border: ~  # crop border when evaluation. If None(~), crop the scale pixels
+gpu_ids: [0]
+
+datasets:
+  test_1:  # the 1st test dataset
+    name: set5
+    mode: LQGT
+    dataroot_GT: ../../datasets/Set5/GTmod12 # path to test HR images
+    dataroot_LQ: ../../datasets/Set5/LRbicx2 # path to test reference LR images, not necessary, if not provided, LR images will be generated in dataloader
+  test_2:  # the 2st test dataset
+    name: set14
+    mode: LQGT
+    dataroot_GT: ../../datasets/Set14/GTmod12 # path to test HR images
+    dataroot_LQ: ../../datasets/Set14/LRbicx2 # path to test reference LR images, not necessary, if not provided, LR images will be generated in dataloader
+  test_3:  # the 3st test dataset
+    name: B100
+    mode: LQGT
+    dataroot_GT: ../../datasets/BSDS100 # path to test HR images
+    dataroot_LQ: ~ # path to test reference LR images, not necessary, if not provided, LR images will be generated in dataloader
+  test_4:  # the 3st test dataset
+    name: Urban100
+    mode: LQGT
+    dataroot_GT: ../../datasets/urban100 # path to test HR images
+    dataroot_LQ: ~ # path to test reference LR images, not necessary, if not provided, LR images will be generated in dataloader
+  test_5:
+    name: val_DIV2K
+    mode: LQGT
+    dataroot_GT: ../../datasets/DIV2K/DIV2K_valid_HR # path to test HR images
+    dataroot_LQ: ../../datasets/DIV2K/DIV2K_valid_LR_bicubic/X2 # path to test reference LR images, not necessary, if not provided, LR images will be generated in dataloader
+
+
+#### network
+network:
+  subnet: DBNet
+  in_nc: 3
+  out_nc: 3
+  e_blocks: 5
+  v_blocks: 3
+  scale: 2
+  gmm_components: 5
+  init: xavier
+
+train:
+  use_diffcomp: true
+  use_realcomp: true
+  comp_format: JPEG
+  comp_quality: 75
+
+#### path
+path:
+  strict_load: true
+  # pretrain_model: ../experiments/01_SAIN_WebP_DB_GMM_5_E_5_V_3_x2_DIV2K/models/latest_net.pth
+  pretrain_model: ../experiments/pretrained_models/SAINx2_WebP.pth
