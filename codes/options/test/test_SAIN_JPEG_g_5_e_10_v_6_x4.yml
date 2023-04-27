@@ -53,5 +53,5 @@ train:
 #### path
 path:
   strict_load: true
-  # pretrain_model: ../experiments/01_SAIN_DB_GMM_5_E_5_V_3_x2_DIV2K/models/latest_net.pth
+  # pretrain_model: ../experiments/01_SAIN_JPEG_DB_GMM_5_E_10_V_6_x4_DIV2K/models/latest_net.pth
   pretrain_model: ../experiments/pretrained_models/SAINx4_JPEG.pth

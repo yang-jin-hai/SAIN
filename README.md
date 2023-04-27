@@ -111,6 +111,8 @@ Please organize the datasets and the code in a folder stucture as:
     └── tb_logger
 ```
 
+To accelerate training, we suggest [crop the 2K resolution images to sub-images](https://github.com/XPixelGroup/BasicSR/blob/master/docs/DatasetPreparation.md#div2k) for faster IO speed.
+
 ## Testing 
 The pretrained models is available in `./experiments/pretrained_models` and the config files is available in `./codes/options` for quickly reproducing the results reported in the paper.
 
@@ -127,6 +129,12 @@ For scale x2 with WebP compression QF=90, change directory to `.code/`, run
 python test.py -opt options/test/test_SAIN_WebP_g_5_e_5_v_3_x2.yml -format WebP -qf 90
 ```
 The visual results and quantitative reports will be written to `./results`.
+
+## Training
+ The training configs are included in  `./codes/options/train`. For example, for scale x2 with JPEG compression, change directory to `.code/`, run
+```shell
+python train.py -opt options/train/train_SAIN_JPEG_g_5_e_5_v3_x2.yml
+```
 
 ## Acknowledgement
 The code is based on [IRN](https://github.com/pkuxmq/Invertible-Image-Rescaling/tree/ECCV) and [BasicSR](https://github.com/xinntao/BasicSR).

@@ -1,0 +1,89 @@
+
+#### general settings
+
+name: 01_SAIN_JPEG_DB_GMM_5_E_5_V_3_x2_DIV2K
+use_tb_logger: true
+model: SAIN
+scale: 2
+gpu_ids: [0]
+
+
+#### datasets
+
+datasets:
+  train:
+    name: DIV2K
+    mode: LQGT
+    dataroot_GT: ../../datasets/DIV2K/DIV2K_train_HR_sub # path to training HR images
+    dataroot_LQ: ../../datasets/DIV2K/DIV2K_train_LR_bicubic/X2_sub # path to training reference LR images, not necessary, if not provided, LR images will be generated in dataloader
+
+    use_shuffle: true
+    n_workers: 6  # per GPU
+    batch_size: 16
+    GT_size: 128
+    use_flip: true
+    use_rot: true
+    color: RGB
+
+  val:
+    name: val_DIV2K
+    mode: LQGT
+    dataroot_GT: ../../datasets/DIV2K/DIV2K_valid_HR # path to validation HR images
+    dataroot_LQ: ../../datasets/DIV2K/DIV2K_valid_LR_bicubic/X2 # path to validation reference LR images, not necessary, if not provided, LR images will be generated in dataloader
+
+
+#### network structures
+
+network:
+  subnet: DBNet
+  in_nc: 3
+  out_nc: 3
+  e_blocks: 5
+  v_blocks: 3
+  scale: 2
+  gmm_components: 5
+  init: xavier
+
+#### path
+
+path:
+  pretrain_model: ~
+  strict_load: true
+  resume_state: ~
+
+
+#### training settings: learning rate scheme, loss
+
+train:
+  use_diffcomp: true
+  use_realcomp: true
+  comp_format: JPEG
+  comp_quality: 75
+  lr: !!float 2e-4
+  beta1: 0.9
+  beta2: 0.999
+  niter: 500000
+  warmup_iter: -1  # no warm up
+
+  lr_scheme: MultiStepLR
+  lr_steps: [100000, 200000, 300000, 400000]
+  lr_gamma: 0.5
+
+  pixel_criterion_forw: l2
+  pixel_criterion_back: l1
+
+  manual_seed: 10
+
+  val_freq: !!float 5e3
+
+  lambda_fit_forw: 4.
+  lambda_rec_back: 1
+  weight_decay: !!float 1e-5
+  gradient_clipping: 10
+
+
+#### logger
+
+logger:
+  print_freq: 100
+  save_checkpoint_freq: !!float 5e3
